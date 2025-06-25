@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  service_1:
+    build:
+      context: ./service_1
+      dockerfile: Dockerfile
+    container_name: go_app
+    ports:
+      - "8001:8001"
+    networks:
+      - backend
+
+  service_2:
+    build:
+      context: ./service_2
+      dockerfile: Dockerfile
+    container_name: python_app
+    ports:
+      - "8002:8002"
+    networks:
+      - backend
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_proxy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - service_1
+      - service_2
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
