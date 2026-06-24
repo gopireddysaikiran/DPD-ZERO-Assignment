@@ -11,6 +11,9 @@ services:
     networks:
       - backend
 
+
+services:
+
   service_2:
     build:
       context: ./service_2
